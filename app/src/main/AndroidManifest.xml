@@ -23,6 +23,7 @@
 <!--        android:minHeight="130dp"-->
 <!--        android:minWidth="328dp"-->
 <!--        android:updatePeriodMillis="2400000">-->
+
 <!--    </appwidget-provider>-->
 
 </manifest>
