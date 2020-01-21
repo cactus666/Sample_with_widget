@@ -3,7 +3,7 @@ package com.countdown.countdown
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import kotlinx.android.synthetic.main.widget.*
+//import kotlinx.android.synthetic.main.widget.adapter_view_flipper
 import kotlinx.android.synthetic.main.widget.next_note
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,7 +16,8 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        adapter_view_flipper
+
+//
 //
 //        next_note.setOnClickListener {
 //            adapter_view_flipper.showNext()

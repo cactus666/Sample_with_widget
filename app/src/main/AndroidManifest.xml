@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.countdown.countdown">
 
+<!--    https://www.youtube.com/watch?v=2c-GbJ-c_eA-->
+<!--    https://codinginflow.com/tutorials/android/viewflipper-->
+<!--    https://abhiandroid.com/ui/adapterviewflipper-->
+<!--4:14-->
+<!--    https://medium.com/android-bits/android-widgets-ad3d166458d3-->
+<!--    https://github.com/yerenutku/WidgetExamples-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

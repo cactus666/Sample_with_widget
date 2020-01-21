@@ -6,18 +6,15 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.util.Log
 import android.widget.RemoteViews
-import java.text.SimpleDateFormat
 import android.content.Intent
-
-
+import android.app.PendingIntent
 
 
 
 class Widget: AppWidgetProvider() {
 
+    val ACTION_NEXT = "com.countdown.countdown.next_note"
     val LOG_TAG = "myLogs"
-//    private lateinit var formatDate: SimpleDateFormat
-//    private lateinit var adapter: AdapterFlipper
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
@@ -27,31 +24,15 @@ class Widget: AppWidgetProvider() {
             updateWidget(context, appWidgetManager, i)
         }
 
-
-//        appWidgetIds?.forEach { id ->
-//            val widgetView = RemoteViews(context!!.packageName, R.layout.widget)
-//
-//            widgetView.set
-//            widgetView.setInt(R.id.adapter_view_flipper, "setFlipInterval", 3000)
-//            widgetView.setBoolean(R.id.adapter_view_flipper, "setAutoStart", true)
-//
-//
-//
-//            widgetView.setTextViewText(R.id.adapter_view_flipper, widgetText)
-//            widgetView.setInt(R.id.tv, "setBackgroundColor", widgetColor)
-//            appWidgetManager!!.updateAppWidget(id, widgetView)
-//        }
-
     }
 
 
     private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
         val view = RemoteViews(context.packageName, R.layout.widget)
         setList(view, context, appWidgetId)
+        setListener(context, view, appWidgetId)
         appWidgetManager.updateAppWidget(appWidgetId, view)
     }
-
-
 
     private fun setList(view: RemoteViews, context: Context, appWidgetId: Int) {
         val adapter = Intent(context, DataFlipperService::class.java)
@@ -59,10 +40,32 @@ class Widget: AppWidgetProvider() {
         view.setRemoteAdapter(R.id.adapter_view_flipper , adapter)
     }
 
+    private fun setListener(context: Context, widgetView: RemoteViews, widgetId: Int) {
+        val nextIntent = Intent(context, Widget::class.java)
+        nextIntent.action = ACTION_NEXT
+        nextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        val pIntent = PendingIntent.getBroadcast(context, widgetId, nextIntent, 0)
+        widgetView.setOnClickPendingIntent(R.id.next_note, pIntent)
+    }
 
 
-
-
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+        if (intent.action.equals(ACTION_NEXT)) {
+            // извлекаем ID экземпляра
+            var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
+            val extras = intent.extras
+            if (extras != null) {
+                widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+            }
+            if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                val widgetView = RemoteViews(context.packageName, R.layout.widget)
+                widgetView.showNext(R.id.adapter_view_flipper)
+                // Обновляем виджет
+                AppWidgetManager.getInstance(context).updateAppWidget(widgetId, widgetView)
+            }
+        }
+    }
 
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
@@ -97,6 +100,5 @@ class Widget: AppWidgetProvider() {
         super.onDeleted(context, appWidgetIds)
         Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
     }
-
 
 }
