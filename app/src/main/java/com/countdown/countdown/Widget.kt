@@ -70,25 +70,6 @@ class Widget: AppWidgetProvider() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         Log.d(LOG_TAG, "onEnabled")
-//        formatDate = SimpleDateFormat("dd MM yyyy")
-//        adapter = AdapterFlipper(
-//            LayoutInflater.from(context), listOf(
-//                Note(
-//                    "A",
-//                    formatDate.parse("23 01 2020")
-//                ),
-//                Note(
-//                    "B",
-//                    formatDate.parse("27 04 2020")
-//                ),
-//                Note(
-//                    "C",
-//                    formatDate.parse("27 04 2022")
-//                )
-//            ))
-//        adapter_view_flipper.adapter = adapter
-//        adapter_view_flipper.flipInterval = 3000
-//        adapter_view_flipper.isAutoStart = true
     }
 
     override fun onDisabled(context: Context?) {
