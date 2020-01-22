@@ -10,6 +10,7 @@
 <!--    https://github.com/yerenutku/WidgetExamples-->
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,7 +24,7 @@
         </activity>
 
         <receiver
-            android:name=".Widget"
+            android:name=".widget.Widget"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -36,7 +37,7 @@
             </meta-data>
         </receiver>
         <service
-            android:name=".DataFlipperService"
+            android:name=".widget.DataFlipperService"
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 

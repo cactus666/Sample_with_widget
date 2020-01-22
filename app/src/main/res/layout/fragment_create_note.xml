@@ -1,6 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:padding="8dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Назовите отсчёт"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:layout_toEndOf="@id/back"
+        android:layout_marginStart="23dp"
+        android:layout_alignBottom="@id/back"
+        android:layout_alignTop="@id/back"
+        android:gravity="center"
+        />
+
+    <EditText
+        android:id="@+id/name_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/back"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/background_description_first_open"
+        android:paddingTop="12dp"
+        android:paddingBottom="36dp"
+        android:paddingStart="9dp"
+        android:inputType="text"
+        android:singleLine="true"
+        android:hint="День рождение мамы"
+        android:textColorHint="@color/color_hint_text"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/data_note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Дата"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:layout_below="@id/name_note"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="8dp"
+        />
+
+    <EditText
+        android:id="@+id/data_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/data_note_title"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/background_description_first_open"
+        android:paddingTop="12dp"
+        android:paddingBottom="36dp"
+        android:paddingStart="9dp"
+        android:inputType="date"
+        android:hint="20.01.2020"
+        android:textColorHint="@color/color_hint_text"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/time_note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Время"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:layout_below="@id/data_note"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="8dp"
+        />
+
+    <EditText
+        android:id="@+id/time_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_note_title"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/background_description_first_open"
+        android:paddingTop="12dp"
+        android:paddingBottom="36dp"
+        android:paddingStart="9dp"
+        android:inputType="time"
+        android:hint="10:00"
+        android:textColorHint="@color/color_hint_text"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/redirect_to_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Готово"
+        android:textSize="16sp"
+        android:textColor="#3A2D49"
+        android:layout_below="@+id/time_note"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@drawable/background_btn_navigate"
+        />
+
+</RelativeLayout>

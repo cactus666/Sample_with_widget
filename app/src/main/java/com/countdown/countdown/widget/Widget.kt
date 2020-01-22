@@ -1,4 +1,4 @@
-package com.countdown.countdown
+package com.countdown.countdown.widget
 
 import java.util.Arrays
 import android.appwidget.AppWidgetManager
@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.content.Intent
 import android.app.PendingIntent
-
+import com.countdown.countdown.R
 
 
 class Widget: AppWidgetProvider() {
@@ -37,7 +37,7 @@ class Widget: AppWidgetProvider() {
     private fun setList(view: RemoteViews, context: Context, appWidgetId: Int) {
         val adapter = Intent(context, DataFlipperService::class.java)
         adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        view.setRemoteAdapter(R.id.adapter_view_flipper , adapter)
+        view.setRemoteAdapter(R.id.adapter_view_flipper, adapter)
     }
 
     private fun setListener(context: Context, widgetView: RemoteViews, widgetId: Int) {
@@ -59,7 +59,9 @@ class Widget: AppWidgetProvider() {
                 widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
             }
             if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                val widgetView = RemoteViews(context.packageName, R.layout.widget)
+                val widgetView = RemoteViews(context.packageName,
+                    R.layout.widget
+                )
                 widgetView.showNext(R.id.adapter_view_flipper)
                 // Обновляем виджет
                 AppWidgetManager.getInstance(context).updateAppWidget(widgetId, widgetView)

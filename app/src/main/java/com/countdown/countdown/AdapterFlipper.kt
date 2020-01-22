@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.BaseAdapter
+import com.countdown.countdown.pojo.Note
 import kotlinx.android.synthetic.main.item_flipper.view.*
 import java.util.concurrent.TimeUnit
 

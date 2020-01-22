@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="Ок"
         android:textColor="#3A2D49"
-        android:background="@drawable/background_btn_navigate_to_list"
+        android:background="@drawable/background_btn_navigate"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginTop="25dp"

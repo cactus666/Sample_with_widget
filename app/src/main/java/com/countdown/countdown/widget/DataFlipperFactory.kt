@@ -1,4 +1,4 @@
-package com.countdown.countdown
+package com.countdown.countdown.widget
 
 import java.util.ArrayList
 import android.appwidget.AppWidgetManager
@@ -7,6 +7,8 @@ import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
+import com.countdown.countdown.pojo.Note
+import com.countdown.countdown.R
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 

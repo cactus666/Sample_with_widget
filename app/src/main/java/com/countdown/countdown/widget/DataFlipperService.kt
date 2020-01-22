@@ -1,10 +1,11 @@
-package com.countdown.countdown
+package com.countdown.countdown.widget
 
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViewsService
+import com.countdown.countdown.widget.DataFlipperFactory
 
 @SuppressLint("Registered")
 class DataFlipperService: RemoteViewsService() {
