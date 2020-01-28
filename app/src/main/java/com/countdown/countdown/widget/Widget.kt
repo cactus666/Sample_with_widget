@@ -1,5 +1,6 @@
 package com.countdown.countdown.widget
 
+import android.annotation.SuppressLint
 import java.util.Arrays
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -9,11 +10,20 @@ import android.widget.RemoteViews
 import android.content.Intent
 import android.app.PendingIntent
 import com.countdown.countdown.R
+import android.app.AlarmManager
+import android.content.ComponentName
+
+
+
+
+
+
 
 
 class Widget: AppWidgetProvider() {
 
     val ACTION_NEXT = "com.countdown.countdown.next_note"
+    val ACTION_UPDATE = "com.countdown.countdown.update_note"
     val LOG_TAG = "myLogs"
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
@@ -51,6 +61,7 @@ class Widget: AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
+        Log.d("onReceive", "---: ${intent.action}, time = ${System.currentTimeMillis()}")
         if (intent.action.equals(ACTION_NEXT)) {
             // извлекаем ID экземпляра
             var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -62,26 +73,56 @@ class Widget: AppWidgetProvider() {
                 val widgetView = RemoteViews(context.packageName,
                     R.layout.widget
                 )
+                updateList(context)
                 widgetView.showNext(R.id.adapter_view_flipper)
                 // Обновляем виджет
                 AppWidgetManager.getInstance(context).updateAppWidget(widgetId, widgetView)
             }
         }
+        if (intent.action.equals(ACTION_UPDATE)) {
+            updateList(context)
+        }
     }
 
+    @SuppressLint("ShortAlarm")
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         Log.d(LOG_TAG, "onEnabled")
+        createUpdatingWidget(context!!, 1 * 1000)
     }
 
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
         Log.d(LOG_TAG, "onDisabled")
+        deleteUpdatingWidget(context!!)
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
-        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds));
+        Log.d(LOG_TAG, "onDeleted " + Arrays.toString(appWidgetIds))
+    }
+
+
+    private fun createUpdatingWidget(context: Context, interval: Long = 1 * 1000) {
+        val intent = Intent(context, Widget::class.java)
+        intent.action = ACTION_UPDATE
+        val pIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, pIntent)
+    }
+
+    private fun deleteUpdatingWidget(context: Context) {
+        val intent = Intent(context, Widget::class.java)
+        intent.action = ACTION_UPDATE
+        val pIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pIntent)
+    }
+
+    private fun updateList(context: Context) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val widgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, javaClass))
+        appWidgetManager.notifyAppWidgetViewDataChanged(widgetIds, R.id.adapter_view_flipper)
     }
 
 }

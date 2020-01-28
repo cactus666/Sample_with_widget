@@ -1,14 +1,18 @@
 package com.countdown.countdown.ui.create_note
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.countdown.countdown.R
 import com.countdown.countdown.pojo.Note
 import kotlinx.android.synthetic.main.fragment_create_note.*
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -47,12 +51,15 @@ class CreateNoteFragment: Fragment(R.layout.fragment_create_note) {
 //        patternForDate.matches(date)
 
         if (name_note.text.toString().trim() == "") {
-            //
+            selectWarningField(name_note)
             result = false
+        }
+        else {
+            selectNormalField(name_note)
         }
 
         if (date == "") {
-            //
+            selectWarningField(data_note)
             result = false
         }
         else {
@@ -64,18 +71,25 @@ class CreateNoteFragment: Fragment(R.layout.fragment_create_note) {
                 month = date.split(".")[1].toInt()
                 year = date.split(".")[2]
                 if ((day in 1..31) && (month in 1..12) && (year.length == 4)) {
-                    //
+                    selectNormalField(data_note)
+                }
+                else {
+                    selectWarningField(data_note)
+                    data_note.setText("")
+                    //data_note.hint = "ВВедите дату по следующему шаблону: день.месяц.год"
                     result = false
                 }
             }catch (ex: Exception) {
-                //
+                selectWarningField(data_note)
+                data_note.setText("")
+                //data_note.hint = "ВВедите дату по следующему шаблону: день.месяц.год"
                 result = false
             }
         }
 
 
         if (time == "") {
-            //
+            selectWarningField(time_note)
             result = false
         }
         else {
@@ -85,12 +99,19 @@ class CreateNoteFragment: Fragment(R.layout.fragment_create_note) {
                 h = time.split(":")[0].toInt()
                 m = time.split(":")[1].toInt()
                 if ((h in 0..23) && (m in 0..59)) {
-                    //
+                    selectNormalField(time_note)
+                }
+                else {
+                    selectWarningField(time_note)
+                    time_note.setText("")
+                    //time_note.hint = "ВВедите время  по следующему шаблону: часы.минуты"
                     result = false
                 }
             }
             catch(ex: Exception) {
-                //
+                selectWarningField(time_note)
+                time_note.setText("")
+                //time_note.hint = "ВВедите время  по следующему шаблону: часы.минуты"
                 result = false
             }
         }
@@ -99,7 +120,11 @@ class CreateNoteFragment: Fragment(R.layout.fragment_create_note) {
         return result
     }
 
-    private fun generateNote(): Note {
+    private fun checkActualDate(date: Date): Boolean {
+        return date.time > System.currentTimeMillis()
+    }
+
+    private fun generateNote(): Note?{
         val fieldDataNote = data_note.text.toString()
         val fieldTimeNote = time_note.text.toString()
 
@@ -110,11 +135,33 @@ class CreateNoteFragment: Fragment(R.layout.fragment_create_note) {
         val hrs = fieldTimeNote.split(":")[0].toInt()
         val min = fieldTimeNote.split(":")[1].toInt()
 
+        val format = SimpleDateFormat("dd.MM.yyyy")
       //  Log.d("generate", "year = ${year}, month = ${month}, date = ${date}, hrs = ${hrs}, min = ${min}")
-        return Note(
-            name_note.text.toString(),
-            Date(year, month, date, hrs, min)
-        )
+       // Log.d("generate", "res - ${Date(year, month, date, hrs, min).time}, ${format.format(Date(year - 1900, month - 1, date, hrs, min).time)}")
+
+        return if (checkActualDate(Date(year - 1900, month - 1, date, hrs, min))) {
+            Note(
+                name_note.text.toString(),
+                Date(year - 1900, month - 1, date, hrs, min)
+            )
+        }
+        else {
+            selectWarningField(data_note)
+            selectWarningField(time_note)
+            null
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun selectWarningField(field: EditText) {
+        field.setBackgroundResource(R.drawable.background_field_create_note_error)
+        field.setTextColor(ContextCompat.getColor(context!!, R.color.color_warning))
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun selectNormalField(field: EditText) {
+        field.setBackgroundResource(R.drawable.background_description_first_open)
+        field.setTextColor(ContextCompat.getColor(context!!, R.color.color_text))
     }
 
 }

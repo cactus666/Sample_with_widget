@@ -5,7 +5,6 @@
 <!--    https://www.youtube.com/watch?v=2c-GbJ-c_eA-->
 <!--    https://codinginflow.com/tutorials/android/viewflipper-->
 <!--    https://abhiandroid.com/ui/adapterviewflipper-->
-<!--6:28-->
 <!--    https://medium.com/android-bits/android-widgets-ad3d166458d3-->
 <!--    https://github.com/yerenutku/WidgetExamples-->
 
@@ -22,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <receiver
             android:name=".widget.Widget"
             android:icon="@mipmap/ic_launcher"

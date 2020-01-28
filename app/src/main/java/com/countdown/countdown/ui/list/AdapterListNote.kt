@@ -1,5 +1,6 @@
 package com.countdown.countdown.ui.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.countdown.countdown.R
 import com.countdown.countdown.pojo.Note
+import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 
-class AdapterListNote(private val inflater: LayoutInflater, private val mData: List<Note>) : RecyclerView.Adapter<AdapterListNote.ViewHolder>() {
+class AdapterListNote(private val inflater: LayoutInflater, private var mData: List<Note>) : RecyclerView.Adapter<AdapterListNote.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.item_notes_list, parent, false)
@@ -24,6 +26,8 @@ class AdapterListNote(private val inflater: LayoutInflater, private val mData: L
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.title.text = mData[position].title
 
+        val format = SimpleDateFormat("dd.MM.yyyy")
+        Log.d("date", "${format.format(mData[position].date.time)}, now = ${format.format(System.currentTimeMillis())}")
         val diff = mData[position].date.time - System.currentTimeMillis()
 
         val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
@@ -35,6 +39,10 @@ class AdapterListNote(private val inflater: LayoutInflater, private val mData: L
         viewHolder.hour.text = hour.toString()
         viewHolder.minute.text = minute.toString()
         viewHolder.second.text = second.toString()
+    }
+
+    fun setData(newData: List<Note>) {
+        mData = newData
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

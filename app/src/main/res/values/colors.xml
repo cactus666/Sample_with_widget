@@ -9,4 +9,5 @@
     <color name="color_hint_text">#CAC6CE</color>
     <color name="color_text">#CAC6CE</color>
 
+    <color name="color_warning">#FF0F00</color>
 </resources>

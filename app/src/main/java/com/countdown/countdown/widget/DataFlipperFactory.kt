@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import com.countdown.countdown.pojo.Note
 import com.countdown.countdown.R
+import com.countdown.countdown.db.Repository
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
@@ -47,20 +48,34 @@ class DataFlipperFactory internal constructor(private var context: Context, inte
     override fun getViewAt(position: Int): RemoteViews {
         Log.d("myLog", "getViewAt, pos = ${position}")
         val view = RemoteViews(context.packageName, R.layout.item_flipper)
+        try {
+            val diff = data[position].date.time - System.currentTimeMillis()
 
-        val diff = data[position].date.time - System.currentTimeMillis()
+            val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+            val hour =
+                TimeUnit.HOURS.convert(diff - day * (24 * 60 * 60 * 1000), TimeUnit.MILLISECONDS)
+            val minute = TimeUnit.MINUTES.convert(
+                diff - day * (24 * 60 * 60 * 1000) - hour * (60 * 60 * 1000),
+                TimeUnit.MILLISECONDS
+            )
+            val second = TimeUnit.SECONDS.convert(
+                diff - day * (24 * 60 * 60 * 1000) - hour * (60 * 60 * 1000) - minute * (60 * 1000),
+                TimeUnit.MILLISECONDS
+            )
 
-        val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-        val hour = TimeUnit.HOURS.convert(diff - day * (24 * 60 * 60 * 1000), TimeUnit.MILLISECONDS)
-        val minute = TimeUnit.MINUTES.convert(diff - day * (24 * 60 * 60 * 1000) - hour * (60 * 60 * 1000), TimeUnit.MILLISECONDS)
-        val second = TimeUnit.SECONDS.convert(diff - day * (24 * 60 * 60 * 1000) - hour * (60 * 60 * 1000) - minute * (60 * 1000), TimeUnit.MILLISECONDS)
+            if (data[position].title.length > 20) {
+                view.setTextViewText(R.id.title, "${data[position].title.substring(0, 20 - 3)}...")
+            } else {
+                view.setTextViewText(R.id.title, data[position].title)
+            }
+            view.setTextViewText(R.id.day, day.toString())
+            view.setTextViewText(R.id.hour, hour.toString())
+            view.setTextViewText(R.id.minutes, minute.toString())
+            view.setTextViewText(R.id.seconds, second.toString())
 
-        view.setTextViewText(R.id.title, data[position].title)
-        view.setTextViewText(R.id.day, day.toString())
-        view.setTextViewText(R.id.hour, hour.toString())
-        view.setTextViewText(R.id.minutes, minute.toString())
-        view.setTextViewText(R.id.seconds, second.toString())
-
+        } catch (ex: Exception) {
+            Log.e("err", "drop storage")
+        }
         return view
     }
 
@@ -76,28 +91,7 @@ class DataFlipperFactory internal constructor(private var context: Context, inte
     override fun onDataSetChanged() {
         Log.d("myLog", "onDataSetChanged")
         data.clear()
-        data.addAll(
-            listOf(
-                Note(
-                    "A",
-                    formatDate.parse("23 01 2020")
-                ),
-                Note(
-                    "B",
-                    formatDate.parse("27 04 2020")
-                ),
-                Note(
-                    "C",
-                    formatDate.parse("27 04 2022")
-                )
-            )
-        )
-//        data.add(sdf.format(Date(System.currentTimeMillis())))
-//        data.add(hashCode().toString())
-//        data.add(widgetID.toString())
-//        for (i in 3..14) {
-//            data.add("Item $i")
-//        }
+        data.addAll(Repository.getAllNotes())
     }
 
     override fun onDestroy() {
