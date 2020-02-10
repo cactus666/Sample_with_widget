@@ -19,7 +19,7 @@ object Repository {
     }
 
     fun getAllNotes(): List<Note> {
-        return Paper.book().read(keyToNotes, listOf<Note>())
+        return Paper.book().read(keyToNotes, listOf())
     }
 
     fun updateDate(): List<Note> {
@@ -34,7 +34,7 @@ object Repository {
             Paper.book().write(keyToNotes, newNoteList)
         }
         catch (ex: Exception) {
-            Log.e("app", "db fail")
+            Log.e("DB", "db fail in updateDate method")
         }
 
         return newNoteList

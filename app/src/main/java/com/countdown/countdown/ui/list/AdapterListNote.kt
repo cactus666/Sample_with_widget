@@ -1,5 +1,6 @@
 package com.countdown.countdown.ui.list
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class AdapterListNote(private val inflater: LayoutInflater, private var mData: L
         return mData.size
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.title.text = mData[position].title
 

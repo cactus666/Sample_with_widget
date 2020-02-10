@@ -39,4 +39,9 @@ class ListFragment: Fragment(R.layout.fragment_list_notes) {
             }
         )
     }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(null)
+    }
 }

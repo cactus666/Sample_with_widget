@@ -52,8 +52,7 @@ class DataFlipperFactory internal constructor(private var context: Context, inte
             val diff = data[position].date.time - System.currentTimeMillis()
 
             val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-            val hour =
-                TimeUnit.HOURS.convert(diff - day * (24 * 60 * 60 * 1000), TimeUnit.MILLISECONDS)
+            val hour = TimeUnit.HOURS.convert(diff - day * (24 * 60 * 60 * 1000), TimeUnit.MILLISECONDS)
             val minute = TimeUnit.MINUTES.convert(
                 diff - day * (24 * 60 * 60 * 1000) - hour * (60 * 60 * 1000),
                 TimeUnit.MILLISECONDS
@@ -90,6 +89,7 @@ class DataFlipperFactory internal constructor(private var context: Context, inte
 
     override fun onDataSetChanged() {
         Log.d("myLog", "onDataSetChanged")
+
         data.clear()
         data.addAll(Repository.getAllNotes())
     }
